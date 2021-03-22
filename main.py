@@ -2,7 +2,6 @@ from flask import Flask, redirect, url_for, request, render_template
 import requests
 import json
 from collections import namedtuple  
-import abc
 import ipaddress
 from ipaddress import ip_network, IPv4Network
 import time 
@@ -12,39 +11,7 @@ app = Flask(__name__)
 
 
 
-
-
-
-class FormalbgptoolsInterface(metaclass=abc.ABCMeta):
-
-    @classmethod
-    def __subclasshook__(cls, subclass):
-        return (hasattr(subclass, 'subnetwork') and 
-                callable(subclass.get_path_attr) or
-                NotImplemented)
-
-
-
-    @abc.abstractmethod
-    def subnetwork(prefix_in):
-        """
-        Calculate Various subnet metrics
-        of an ipaddress input 
-        """
-        raise NotImplementedError
-
-
-class bgptools(FormalbgptoolsInterface):
-
-    def subnetwork(prefix_in):
-        """
-        TBC
-        """
-        pass 
-        
-        
-
-class Controller(bgptools):
+class Controller:
 
     
     def __init__(self):
