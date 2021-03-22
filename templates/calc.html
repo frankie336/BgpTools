@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BGP Tools</title>
+
+   
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/sign.css') }}" rel="stylesheet">
+
+
+
+    
+    <!--Scripts Here-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" 
+          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+          crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/update_ajax.js') }}"></script> 
+    
+    <!-- Javascript Variables for external .js files -->
+    <script>
+      var class_subsA = {{ class_subs | tojson }};
+      var class_subsB = {{ class_subs[8:] | tojson }};
+      var class_subsC = {{ class_subs[16:] | tojson }};
+
+      var class_bitsA = {{ subnet_bits | tojson }};
+      var class_bitsB = {{ subnet_bits[:15] | tojson }};
+      var class_bitsC = {{ subnet_bits[:7] | tojson }};
+
+      var class_maskA = {{ subnet_len | tojson }};
+      var class_maskB = {{ subnet_len[8:] | tojson }};
+      var class_maskC = {{ subnet_len[16:] | tojson }};
+
+
+      var max_subsA = {{ max_subs | tojson }};
+      var max_subsB = {{ max_subs[:15] | tojson }};
+      var max_subsC = {{ max_subs[:7] | tojson }};
+
+
+      var persubA = {{ hosts_persub | tojson }};
+      var persubB = {{ hosts_persub[7:] | tojson }};
+      var persubC = {{ hosts_persub[15:] | tojson }};
+      
+      
+      var subnetin = "{{ subnetin }}";
+        
+      </script>
+
+    <!--On id="radioButton*" -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/changes.js') }}"></script> 
+    <!--On id="radioButton*"-->
+    <script src="/static/js/select_subnet.js"></script>
+    <!--On id ="radioButton*"-->
+    <script src="/static/js/select_bits.js"></script>
+    <!--On id ="radioButton*"-->
+    
+    <script src="/static/js/select_mask.js"></script>
+     <!--On id="maxsubnets"-->
+    <script src="/static/js/select_maxsubs.js"></script>
+     <!--On id="hostspersub"-->
+    <script src="/static/js/select_hostspersub.js"></script>
+
+    <!--On id="ipclassbits"-->
+    <script src="/static/js/map_bitstomask.js"></script>
+    <!--On id='subnetout'-->
+    <script src="/static/js/map_masktobits.js"></script>
+    <!--On id='maxsubnets-->
+    <script src="/static/js/map_maxtomask.js"></script>
+
+    <!--On id="maskbits"-->
+    <script src="/static/js/map_masklen.js"></script>
+    <script src="/static/js/map_hostper.js"></script>
+
+    <script src="/static/js/correct_hostsel.js"></script>
+
+     <script src="/static/js/on_load.js"></script>
+
+
+
+    
+
+
+   
+
+    
+
+  </head>
+
+  <body>
+   
+    <div class="container">
+      
+      <form class="form-signin" name="ipv4calc_form" id="ipv4calc_form" method="post">
+      
+        <h2 class="form-signin-heading">IPv4 Subnet Calculator</h2><br>
+        <div>
+          <!-- Radio buttons for ip class selection -->
+          <input type="radio" id="radioButton1" name="radioButton" value="1" onclick="select_subnet(this);
+          select_subits(this);changeOptions(),select_mask(this);select_maxsubs(this);select_hosts(this)"/>
+          <label for="radioButton1">Class A</label>
+          <input type="radio" id="radioButton2" name="radioButton" value="2" onclick="select_subnet(this);
+          select_subits(this);changeOptions(),select_mask(this);select_maxsubs(this);select_hosts(this)"/>
+          <label for="radioButton2">Class B</label>
+          <input type="radio" id="radioButton3" name="radioButton" value="3" onclick="select_subnet(this);
+          select_subits(this);changeOptions(),select_mask(this);select_maxsubs(this);select_hosts(this)"/>
+          <label for="radioButton3">Class C</label>
+        </div><br><br>
+        
+        <!-- Retain radio button sletion  -->
+        <script>
+          var radiocheck = "{{ radio_select }}";
+        </script>
+        <script src="/static/js/select_radio.js"></script>
+
+
+
+      
+
+
+         
+        <div class="input-group">
+            <!-- IP Address entry and IP hex format output -->
+            <!-- Set a default value in the prefix entry -->
+            <label for="prefix">IP Address</label>
+            <input type="text" id="prefix" name="prefix" class="form-control  
+                input-sm" value="{{ default_prefix }}"  required autofocus placeholder="Select Class" /> 
+
+            <!-- reducong the gap between them to zero --> 
+            <span class="input-group-btn" 
+                  style="width:0px;"></span>
+
+            <!-- declaration for second field -->
+            <label for="iphex">IP Address Hex Format</label>
+            <input type="text" id="iphex" name=iphex class="form-control
+                     input-sm" value="{{ dottedhex }}" readonly  />
+        </div> <br><br>
+
+       
+
+      
+      <div class="input-group">
+        <!-- Subnet Mask / Wildcard Mask -->
+        <label for="subnetout">Subnet Mask</label>
+   
+        <select name = 'subnetout' id='subnetout' class ="form-control" onchange="map_masktobits()" >
+          {% for sub in  class_subs[16:] %}
+           <option value="{{ sub }}">{{ sub }}</option>
+          {% endfor %}
+          <option selected> {{subnetin}} </option>
+        </select>
+
+        
+        <!-- reducong the gap between them to zero --> 
+        <span class="input-group-btn" 
+              style="width:0px;" size="50"></span>
+
+        <!-- declaration for second field -->
+        <label for="wildcard">Wildcard Mask</label>
+        <input type="text" id="wildcard" name ="wildcard" class="form-control
+               input-sm" value="{{ wild_card_mask }}" readonly  />
+      </div><br><br>
+
+
+
+
+      <div class="input-group">
+        
+        <!-- Subnet Bits / Wildcard Mask -->
+        <label for="ipclassbits">Subnet Bits</label>
+        <select name="ipclassbits" id="ipclassbits" class ="form-control" onchange="map_bitstomask()">
+          {% for bit in  bits_back %}
+           <option value="{{ bit }}">{{ bit }}</option>
+          {% endfor %}
+          <option selected> {{subitsin}} </option>
+        </select>
+
+
+        <!-- reducong the gap between them to zero --> 
+        <span class="input-group-btn" 
+              style="width:0px;"></span>
+
+        <!-- declaration for second field -->       
+        <label for="maskbits">Mask Bits</label>
+        <select name="maskbits" id="maskbits" class ="form-control" onchange="map_masklen()">
+          {% for mask in  mask_back %}
+           <option value="{{ mask }}">{{ mask }}</option>
+          {% endfor %}
+          <option selected> {{maskbitsin}} </option>
+        </select>
+      
+      </div><br><br>
+
+
+      <div class="input-group">
+        
+        <!-- Subnet Bits / Wildcard Mask -->
+        <label for="maxsubnets">Maximum Subnets</label>
+        <select name="maxsubnets" id="maxsubnets" class ="form-control" onchange="map_maxtomask()" >
+          {% for max in  max_subs %}
+           <option value="{{ max }}">{{ max }}</option>
+          {% endfor %}
+          <option selected> {{max_subsin}} </option>
+        </select>
+
+
+        <!-- reducong the gap between them to zero --> 
+        <span class="input-group-btn" 
+              style="width:0px;"></span>
+
+        <!-- declaration for second field -->       
+        <label for="hostspersub">Hosts Per Subnet</label>
+        <select name="hostspersub" id="hostspersub" class ="form-control" onchange="map_hostper()">
+         {% for host in  hosts_persub %}
+          <option value="{{ host }}">{{ host }}</option>
+         {% endfor %}
+         <option selected> {{max_hostsin}} </option>
+
+        </select>
+      
+    </div><br><br>
+
+
+    <div class="input-group">
+        <!-- Subnet Mask / Wildcard Mask -->
+        <label for="subnetid">Subnet ID</label>
+        <input type="text" id="subnetid" name ="subnetid" class="form-control
+               input-sm" value="{{ subnetid }}" readonly  />
+        
+
+        
+        <!-- reducong the gap between them to zero --> 
+        <span class="input-group-btn" 
+              style="width:0px;"></span>
+
+        <!-- declaration for second field -->
+        <label for="broadcastaddr">Broadcast Address</label>
+        <input type="text" id="broadcastaddr" name ="broadcastaddr" class="form-control
+               input-sm" value="{{ broadcast_address }}" readonly  />
+      </div><br><br>
+
+      
+     
+      
+      <button class="btn btn-lg btn-primary btn-block" type="submit" name ="btnSubmit" id="btnSubmit" >Submit</button>
+      </form>
+
+
+ 
+
+
+</head>
+<body>
+
+
+ 
+    </div> <!-- /container -->
+
+  </body>
+</html>
+
+
+
+
