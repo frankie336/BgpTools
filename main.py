@@ -91,7 +91,7 @@ class Controller:
           radio_select = 'radioButton3'
           default_prefix = '192.168.1.1'
           subnetin = '255.255.255.0'##used
-          subnet_back = '0.0.0.0'##used
+          subnet_back = self.class_subs[16:]##used
           bits_back = self.subnet_bits[:7]##used
           mask_back = self.subnet_len[16:]##used
           subnetid = '192.168.1.0'#used
@@ -102,6 +102,7 @@ class Controller:
           max_hostsin ='254'#used
           max_subsin = '1'#used
           hosts_persub = self.hosts_persub[15:]
+          rad_select=''
 
 
 
@@ -110,19 +111,21 @@ class Controller:
         
           if request.method == "POST":
 
+            time.sleep(1)
+
             rad_select = request.form['radioButton']#The passed value ip class radio selection
 
-            prefixin = request.form.get("prefix")#The user input IP Address
-            subnetin = request.form.get("subnetout")
-            subitsin = request.form.get("ipclassbits")
-            maskbitsin = request.form.get("maskbits")
-            max_hostsin = request.form.get("hostspersub")
-            max_subsin = request.form.get("maxsubnets")
-
-            wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
 
 
           if rad_select =='1':
+                
+                prefixin = request.form.get("prefix")#The user input IP Address
+                subnetin = request.form.get("subnetout")
+                subitsin = request.form.get("ipclassbits")
+                maskbitsin = request.form.get("maskbits")
+                max_hostsin = request.form.get("hostspersub")
+                max_subsin = request.form.get("maxsubnets")
+
                 
                 default_prefix = prefixin
                 radio_select = 'radioButton1'
@@ -130,12 +133,20 @@ class Controller:
                 bits_back = self.subnet_bits
                 mask_back = self.subnet_len
                 max_subs = self.max_subnets
+                time.sleep(.1)
                 hosts_persub = self.hosts_persub
 
                 wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
           
 
           if rad_select =='2':
+
+                prefixin = request.form.get("prefix")#The user input IP Address
+                subnetin = request.form.get("subnetout")
+                subitsin = request.form.get("ipclassbits")
+                maskbitsin = request.form.get("maskbits")
+                max_hostsin = request.form.get("hostspersub")
+                max_subsin = request.form.get("maxsubnets")
              
                 default_prefix = prefixin
                 radio_select = 'radioButton2'
@@ -143,6 +154,7 @@ class Controller:
                 bits_back = self.subnet_bits[:15]
                 mask_back = self.subnet_len[8:]
                 max_subs = self.max_subnets[:15]
+                time.sleep(.1)
                 hosts_persub = self.hosts_persub[7:]
 
                 wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
@@ -151,6 +163,13 @@ class Controller:
 
             
           if rad_select =='3':
+
+                prefixin = request.form.get("prefix")#The user input IP Address
+                subnetin = request.form.get("subnetout")
+                subitsin = request.form.get("ipclassbits")
+                maskbitsin = request.form.get("maskbits")
+                max_hostsin = request.form.get("hostspersub")
+                max_subsin = request.form.get("maxsubnets")
              
                 default_prefix = prefixin
                 radio_select = 'radioButton3'
@@ -158,6 +177,7 @@ class Controller:
                 bits_back = self.subnet_bits[:7]
                 mask_back = self.subnet_len[16:]
                 max_subs = self.max_subnets[:7]
+                time.sleep(.1)
                 hosts_persub = self.hosts_persub[15:]
 
                 wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)

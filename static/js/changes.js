@@ -11,18 +11,7 @@
 function changeOptions() {
 
     
-    var form = document.getElementById("ipv4calc_form");
-    var ipclassaOptions = document.getElementById("ipclassaOptions");
-    var ipclassbOptions = document.getElementById("ipclassbOptions");
-    var ipclasscOptions = document.getElementById("ipclasscOptions");
-
-    var ipclassabits = document.getElementById("ipclassabits");
-    var ipclassbbits = document.getElementById("ipclassbbits");
-    var ipclasscbits = document.getElementById("ipclasscbits");
-
-
-
-    
+  
     if (ipv4calc_form.radioButton1.checked) {
         //Set the value of the prefix input to a default
         document.getElementById("prefix").value = "10.0.0.1";
@@ -30,9 +19,9 @@ function changeOptions() {
         document.getElementById("maskbits").vlaue= "8";
         document.getElementById("maxsubnets").selectedIndex = "0";
         document.getElementById("hostspersub").value = "16777214";
-       
-       document.getElementById('btnSubmit').click();
-       //document.getElementById("radioButton1").checked = true;
+
+        document.getElementById("ipv4calc_form").submit();
+        
         
         
    
@@ -45,8 +34,10 @@ function changeOptions() {
         document.getElementById("maskbits").value = "16";
         document.getElementById("maxsubnets").selectedIndex = "0";
         document.getElementById("hostspersub").value = "65534";
+
+        document.getElementById("ipv4calc_form").submit();
        
-        //document.getElementById('btnSubmit').click();
+        
       
       
 
@@ -58,8 +49,10 @@ function changeOptions() {
         document.getElementById("maskbits").value ="24"
         document.getElementById("maxsubnets").selectedIndex = "0";
         document.getElementById("hostspersub").value = "254";
+
+        document.getElementById("ipv4calc_form").submit();
     
-      //document.getElementById('btnSubmit').click();
+        
       
      
 

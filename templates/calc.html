@@ -89,9 +89,9 @@
     <script src="/static/js/map_masklen.js"></script>
     <script src="/static/js/map_hostper.js"></script>
 
-    <script src="/static/js/correct_hostsel.js"></script>
+    <script src="/static/js/on_load.js"></script>
 
-     <script src="/static/js/on_load.js"></script>
+    <script src="/static/js/copy_fileds.js"></script>
 
 
 
@@ -168,7 +168,7 @@
         <label for="subnetout">Subnet Mask</label>
    
         <select name = 'subnetout' id='subnetout' class ="form-control" onchange="map_masktobits()" >
-          {% for sub in  class_subs[16:] %}
+          {% for sub in  subnet_back %}
            <option value="{{ sub }}">{{ sub }}</option>
           {% endfor %}
           <option selected> {{subnetin}} </option>
@@ -267,6 +267,7 @@
      
       
       <button class="btn btn-lg btn-primary btn-block" type="submit" name ="btnSubmit" id="btnSubmit" >Submit</button>
+      
       </form>
 
 
