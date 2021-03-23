@@ -1,0 +1,27 @@
+descriptor:      [C:\Users\Thanos\AppData\Local\Google\Cloud SDK\BgpTools\app.yaml]
+source:          [C:\Users\Thanos\AppData\Local\Google\Cloud SDK\BgpTools]
+target project:  [ascendant-cache-242613]
+target service:  [default]
+target version:  [20210322t234530]
+target url:      [https://ascendant-cache-242613.wn.r.appspot.com]
+
+
+Do you want to continue (Y/n)?  y
+
+Beginning deployment of service [default]...
+Created .gcloudignore file. See `gcloud topic gcloudignore` for details.
+Uploading 3 files to Google Cloud Storage
+33%
+67%
+100%
+100%
+File upload done.
+Updating service [default]...done.
+Setting traffic split for service [default]...done.
+Deployed service [default] to [https://ascendant-cache-242613.wn.r.appspot.com]
+
+You can stream logs from the command line by running:
+  $ gcloud app logs tail -s default
+
+To view your application in the web browser run:
+  $ gcloud app browse

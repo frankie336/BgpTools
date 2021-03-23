@@ -32,6 +32,7 @@ function changeOptions() {
         document.getElementById("hostspersub").value = "16777214";
        
        document.getElementById('btnSubmit').click();
+       //document.getElementById("radioButton1").checked = true;
         
         
    
@@ -45,7 +46,7 @@ function changeOptions() {
         document.getElementById("maxsubnets").selectedIndex = "0";
         document.getElementById("hostspersub").value = "65534";
        
-        document.getElementById('btnSubmit').click();
+        //document.getElementById('btnSubmit').click();
       
       
 
@@ -58,7 +59,7 @@ function changeOptions() {
         document.getElementById("maxsubnets").selectedIndex = "0";
         document.getElementById("hostspersub").value = "254";
     
-      document.getElementById('btnSubmit').click();
+      //document.getElementById('btnSubmit').click();
       
      
 

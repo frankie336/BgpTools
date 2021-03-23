@@ -26,8 +26,51 @@ class Controller:
         self.hosts_persub = hosts_persub
         self.max_subnets = max_subnets
 
+
+    def ProcessIp(self,ip,subnet):
+
+        errors = ['IP address format error']
+  
+        try:
+           ipnet = ipaddress.ip_network(ip+'/'+subnet, strict=False)
+        except ValueError as e:
+          wild_card_mask = errors[0]
+          subnetid =  errors[0]
+          broadcast_address =  errors[0]
+          dottedhex =  errors[0]
+          return wild_card_mask,subnetid,broadcast_address,dottedhex
+        else:
+          pass 
+
+        
+        """
+        Get the wildcardmask
+        """
+        wild_card_mask= ipnet.hostmask
+        """
+        Get the subnet ID
+        """
+        subnetid = ipnet.network_address
+        """
+        Get the broadcast address
+        """
+        broadcast_address  = ipnet.broadcast_address
+        
+        """
+        Get the Hex Format
+        of the IP address 
+        """
+        prefix_split = str(ip).split('.')
+        fullhex = "".join([hex(int(value))[2:].zfill(2) for value in prefix_split])
+        dottedhex = (fullhex[0:2])+'.'+(fullhex[2:4])+'.'+(fullhex[4:6])+'.'+(fullhex[6:8])
+
+        return wild_card_mask,subnetid,broadcast_address,dottedhex
+
     
         
+    
+
+    
     app.add_url_rule('/', 'index', lambda: controller.index()) 
     def index(self):
          
@@ -76,7 +119,10 @@ class Controller:
             max_hostsin = request.form.get("hostspersub")
             max_subsin = request.form.get("maxsubnets")
 
-            if rad_select =='1':
+            wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
+
+
+          if rad_select =='1':
                 
                 default_prefix = prefixin
                 radio_select = 'radioButton1'
@@ -86,8 +132,10 @@ class Controller:
                 max_subs = self.max_subnets
                 hosts_persub = self.hosts_persub
 
+                wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
+          
 
-            if rad_select =='2':
+          if rad_select =='2':
              
                 default_prefix = prefixin
                 radio_select = 'radioButton2'
@@ -97,8 +145,12 @@ class Controller:
                 max_subs = self.max_subnets[:15]
                 hosts_persub = self.hosts_persub[7:]
 
+                wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
+            
 
-            if rad_select =='3':
+
+            
+          if rad_select =='3':
              
                 default_prefix = prefixin
                 radio_select = 'radioButton3'
@@ -108,40 +160,11 @@ class Controller:
                 max_subs = self.max_subnets[:7]
                 hosts_persub = self.hosts_persub[15:]
 
+                wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
+           
 
 
-            """
-            ***IP address processing here**
-            
-            """
-            """
-            Convert the received prefix
-            to a ipaddress() network object 
-            """
-            ipn = ipaddress.ip_network((prefixin)+'/'+subnetin, strict=False)
-            """
-            Get the wildcardmask
-            """
-            wild_card_mask= ipn.hostmask
-            """
-            Get the subnet ID
-            """
-            subnetid = ipn.network_address
-            """
-            Get the broadcast address
-            """
-            broadcast_address  = ipn.broadcast_address
 
-
-         
-            
-            """
-            Get the Hex Format
-            of the IP address 
-            """
-            prefix_split = str(prefixin).split('.')
-            fullhex = "".join([hex(int(value))[2:].zfill(2) for value in prefix_split])
-            dottedhex = (fullhex[0:2])+'.'+(fullhex[2:4])+'.'+(fullhex[4:6])+'.'+(fullhex[6:8])
             
         
 
