@@ -103,6 +103,7 @@ class Controller:
           max_subsin = '1'#used
           hosts_persub = self.hosts_persub[15:]
           rad_select=''
+          first_oct = '192 - 223'
 
 
 
@@ -133,8 +134,8 @@ class Controller:
                 bits_back = self.subnet_bits
                 mask_back = self.subnet_len
                 max_subs = self.max_subnets
-                time.sleep(.1)
                 hosts_persub = self.hosts_persub
+                first_oct = '1 - 126'
 
                 wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
           
@@ -154,8 +155,8 @@ class Controller:
                 bits_back = self.subnet_bits[:15]
                 mask_back = self.subnet_len[8:]
                 max_subs = self.max_subnets[:15]
-                time.sleep(.1)
                 hosts_persub = self.hosts_persub[7:]
+                first_oct = '128 - 191'
 
                 wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
             
@@ -177,11 +178,11 @@ class Controller:
                 bits_back = self.subnet_bits[:7]
                 mask_back = self.subnet_len[16:]
                 max_subs = self.max_subnets[:7]
-                time.sleep(.1)
                 hosts_persub = self.hosts_persub[15:]
-
-                wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
+                first_oct = '192 - 223'
            
+                wild_card_mask,subnetid,broadcast_address,dottedhex=self.ProcessIp(prefixin,subnetin)
+
 
 
 
@@ -207,6 +208,7 @@ class Controller:
           16. hosts_persub -
           17. max_hostsin -
           18. max_subsin -
+          19. first_oct -
           """
           return render_template('calc.html',class_subs=self.class_subs,
                                  subnet_bits=self.subnet_bits,
@@ -226,7 +228,8 @@ class Controller:
                                  max_subs = max_subs,
                                  hosts_persub=hosts_persub,
                                  max_hostsin = max_hostsin,
-                                 max_subsin=max_subsin
+                                 max_subsin=max_subsin,
+                                 first_oct=first_oct
                                  )
     
     

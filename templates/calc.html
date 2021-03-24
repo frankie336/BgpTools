@@ -111,11 +111,13 @@
       <form class="form-signin" name="ipv4calc_form" id="ipv4calc_form" method="post">
       
         <h2 class="form-signin-heading">IPv4 Subnet Calculator</h2><br>
-      
+
+
+
         
       
 
-
+      
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-primary active">
             <input type="radio" id="radioButton1" name="radioButton" value="1" onclick="select_subnet(this);
@@ -129,15 +131,26 @@
         <label class="btn btn-primary active">
             <input type="radio" id="radioButton3" name="radioButton" value="3" onclick="select_subnet(this);
             select_subits(this);changeOptions();select_mask(this);select_maxsubs(this);select_hosts(this)"> Class C
-        </label>
-      </div><br><br>
+        </label></div><br><br>
 
+           
 
       <!-- Retain radio button sletion  -->
       <script>
       var radiocheck = "{{ radio_select }}";
       </script>
       <script src="/static/js/select_radio.js"></script>
+
+
+      <div class="input-group">
+        <!-- Subnet Mask / Wildcard Mask -->
+        <label for="firstoct">First Octet Range</label>
+        <input type="text" id="firstoct" name ="firstoct" 
+        " value="{{ first_oct }}" readonly  />
+        
+
+      </div><br><br>
+      
 
 
 
@@ -148,16 +161,19 @@
             <!-- Set a default value in the prefix entry -->
             <label for="prefix">IP Address</label>
             <input type="text" id="prefix" name="prefix" class="form-control  
-                input-sm" value="{{ default_prefix }}"  required autofocus placeholder="Select Class" /> 
+                input-sm" value="{{ default_prefix }}" /> 
 
             <!-- reducong the gap between them to zero --> 
             <span class="input-group-btn" 
                   style="width:0px;"></span>
 
+
+
             <!-- declaration for second field -->
             <label for="iphex">IP Address Hex Format</label>
             <input type="text" id="iphex" name=iphex class="form-control
                      input-sm" value="{{ dottedhex }}" readonly  />
+
         </div> <br><br>
 
        
@@ -262,6 +278,9 @@
         <input type="text" id="broadcastaddr" name ="broadcastaddr" class="form-control
                input-sm" value="{{ broadcast_address }}" readonly  />
       </div><br><br>
+
+
+     
 
       
      
